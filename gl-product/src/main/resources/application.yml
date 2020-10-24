@@ -1,0 +1,42 @@
+
+spring:
+  datasource:
+#    password: qweqwe
+    password: 123456
+    username: root
+    url: jdbc:mysql://192.168.0.15:3306/gulimall_product?rewriteBatchedStatements=true
+#    url: jdbc:mysql://192.168.20.134:3306/gulimall_product?rewriteBatchedStatements=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  application:
+    name: guli-product
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        generate_statistics: true
+        format_sql: true
+        jdbc:
+          batch_size: 500
+          batch_versioned_data: true
+        order_inserts: true
+        order_updates: true
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    alicloud:
+      access-key: LTAI4G6iduv5DdbaH7c2MrRC
+      secret-key: PxifW2at1BTxrB2JbzrjmBDn1vSiQK
+      oss:
+        endpoint: oss-cn-beijing.aliyuncs.com
+  jackson:
+    date-format: MM-dd-yyyy HH:mm:ss
+  thymeleaf:
+    cache: false
+server:
+  port: 9000
+#logging:
+#  level:
+#    com.glmall: error

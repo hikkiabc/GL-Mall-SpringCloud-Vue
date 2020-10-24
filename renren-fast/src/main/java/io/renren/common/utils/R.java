@@ -61,4 +61,10 @@ public class R extends HashMap<String, Object> {
 		super.put(key, value);
 		return this;
 	}
+
+//	public static void main(String[] args) {
+//		R r = new R();
+//		R put = r.put("1", "2");
+//		System.out.println(put);
+//	}
 }

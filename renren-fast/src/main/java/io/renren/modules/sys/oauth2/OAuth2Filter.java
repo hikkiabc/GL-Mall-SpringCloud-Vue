@@ -39,7 +39,6 @@ public class OAuth2Filter extends AuthenticatingFilter {
         if(StringUtils.isBlank(token)){
             return null;
         }
-
         return new OAuth2Token(token);
     }
 
