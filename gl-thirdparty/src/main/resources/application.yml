@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: gl-thirdparty
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    alicloud:
+      access-key: LTAI4G6iduv5DdbaH7c2MrRC
+      secret-key: PxifW2at1BTxrB2JbzrjmBDn1vSiQK
+      oss:
+        endpoint: oss-cn-beijing.aliyuncs.com
+        bucket: edu-0802
+
+server:
+  port: 30000
+
+

@@ -1,0 +1,50 @@
+server:
+  port: 88
+
+spring:
+  cloud:
+   nacos:
+    discovery:
+     server-addr: 127.0.0.1:8848
+   gateway:
+     routes:
+       - id: baidu
+         uri: http://baidu.com
+         predicates:
+           - Query= url,baidu
+       - id: product
+         uri: lb://guli-product
+         predicates:
+           - Path=/api/product/**
+         filters:
+           - RewritePath=/api/(?<segment>.*),/$\{segment}
+       - id: member
+         uri: lb://glmall-member
+         predicates:
+           - Path=/api/member/**
+         filters:
+           - RewritePath=/api/(?<segment>.*),/$\{segment}
+       - id: thirdparty
+         uri: lb://gl-thirdparty
+         predicates:
+           - Path=/api/thirdparty/**
+         filters:
+           - RewritePath=/api/thirdparty/(?<segment>.*),/$\{segment}
+       - id: ware
+         uri: lb://gl-ware
+         predicates:
+           - Path=/api/ware/**
+         filters:
+           - RewritePath=/api/(?<segment>.*),/$\{segment}
+       - id: admin
+         uri: lb://renren-admin
+         predicates:
+           - Path=/api/**
+         filters:
+           - RewritePath=/api/(?<segment>.*),/renren-fast/$\{segment}
+       - id: glmall_host
+         uri: lb://guli-product
+         predicates:
+           - Host=**.192.168.0.15
+
+

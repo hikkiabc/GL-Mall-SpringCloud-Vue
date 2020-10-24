@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: gl-ware
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+  datasource:
+    url: jdbc:mysql://192.168.0.15:3306/gulimall_ware?rewriteBatchedStatements=true
+    username: root
+    password: 123456
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+#    properties:
+server:
+  port: 9005

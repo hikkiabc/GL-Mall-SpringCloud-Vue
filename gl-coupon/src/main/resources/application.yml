@@ -1,0 +1,26 @@
+server:
+  port: 9002
+spring:
+  application:
+    name: glmall-coupon
+  datasource:
+    password: 123456
+    username: root
+    url: jdbc:mysql://192.168.0.15:3306/gulimall_coupon
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          batch_size: 500
+          batch_versioned_data: true
+        order_inserts: true
+        order_updates: true
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
