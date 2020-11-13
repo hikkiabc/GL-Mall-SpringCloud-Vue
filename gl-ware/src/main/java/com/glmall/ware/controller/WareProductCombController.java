@@ -2,6 +2,7 @@ package com.glmall.ware.controller;
 
 import TO.ProductCombStockTO;
 import com.glmall.utils.R;
+import com.glmall.ware.beans.FareVo;
 import com.glmall.ware.beans.ProductCombWare;
 import com.glmall.ware.beans.PurchaseDetail;
 import com.glmall.ware.beans.WareInfo;
@@ -10,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,5 +58,12 @@ public class WareProductCombController {
     public R savePurchaseDetail(@RequestBody PurchaseDetail purchaseDetail){
        PurchaseDetail purchaseDetail1= wareProductCombService.savePurchaseDetail(purchaseDetail);
        return R.ok().put("data",purchaseDetail1);
+    }
+
+    @GetMapping("/wareinfo/fare")
+    public R getDeliveryFareByAddressId(String addrId) throws IOException {
+       FareVo fare= wareProductCombService.getDeliveryFareByAddressId(addrId);
+
+       return R.ok().put("data",fare);
     }
 }

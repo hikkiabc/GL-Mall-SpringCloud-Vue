@@ -1,11 +1,13 @@
 package com.glmall.ware.service;
 
 import TO.ProductCombStockTO;
+import com.glmall.ware.beans.FareVo;
 import com.glmall.ware.beans.ProductCombWare;
 import com.glmall.ware.beans.PurchaseDetail;
 import com.glmall.ware.beans.WareInfo;
 import org.springframework.data.domain.Page;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -23,4 +25,6 @@ public interface WareProductCombService {
     ProductCombWare saveWareProductComb(ProductCombWare productCombWare);
 
     List<ProductCombStockTO> getProductCombHasStockByProductCombIdList(List<String> idList);
+
+    FareVo getDeliveryFareByAddressId(String id) throws IOException;
 }

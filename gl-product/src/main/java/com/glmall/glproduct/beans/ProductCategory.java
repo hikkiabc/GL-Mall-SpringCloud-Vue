@@ -8,12 +8,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Transient;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Entity
-public class ProductCategory {
+public class ProductCategory implements Serializable {
     @Id
     @GeneratedValue(generator = "snowFlakeWorker")
     @GenericGenerator(name = "snowFlakeWorker", strategy = "com.glmall.utils.SnowFlakeWorker")

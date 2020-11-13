@@ -1,0 +1,55 @@
+//put gl_product
+{
+  "mappings" : {
+    "properties" : {
+      "attrList" : {
+        "type" : "nested",
+        "properties" : {
+          "id" : {
+            "type" : "keyword"
+          },
+          "name" : {
+            "type" : "keyword"
+          },
+          "value" : {
+            "type" : "keyword"
+          }
+        }
+      },
+      "brandId" : {
+        "type" : "keyword"
+      },
+      "brandName" : {
+        "type" : "keyword"
+      },
+      "categoryId" : {
+        "type" : "keyword"
+      },
+      "categoryName" : {
+        "type" : "keyword"
+      },
+      "hasStock" : {
+        "type" : "boolean"
+      },
+      "hotScore" : {
+        "type" : "long"
+      },
+      "price" : {
+        "type" : "float"
+      },
+      "productCombId" : {
+        "type" : "keyword"
+      },
+      "productCombImg" : {
+        "type" : "keyword"
+      },
+      "productCombTitle" : {
+        "type" : "text",
+        "analyzer" : "ik_smart"
+      },
+      "productId" : {
+        "type" : "keyword"
+      }
+    }
+  }
+}

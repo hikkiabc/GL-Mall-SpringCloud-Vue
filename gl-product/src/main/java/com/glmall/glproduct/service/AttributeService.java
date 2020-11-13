@@ -6,6 +6,7 @@ import com.glmall.glproduct.beans.Attribute_AttributeGroup;
 import com.glmall.glproduct.beans.Product_Attribute;
 import com.glmall.glproduct.beans.vo.AttributeVO;
 import com.glmall.glproduct.beans.vo.GroupWithAttrVO;
+import com.glmall.utils.Page_1;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public interface AttributeService {
 
     Map save(AttributeVO attribute);
 
-    Page<Attribute> getAllAttribute(Map map, String categoryId);
+    Page_1<Attribute> getAllAttribute(Map map, String categoryId);
 
     Integer deleteAttribute_attributeGroup(List<Attribute_AttributeGroup> attribute_attributeGroupList);
 
@@ -31,4 +32,6 @@ public interface AttributeService {
     List<Product_Attribute> getProductBasicAttr(String categoryId);
 
     List<Product_Attribute> saveProductBasicAttr(List<Product_Attribute> product_attributes, String productId);
+
+    List<String> getSkuSaleAttrsBySkuId(String id);
 }

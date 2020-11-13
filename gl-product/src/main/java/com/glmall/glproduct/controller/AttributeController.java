@@ -1,18 +1,16 @@
 package com.glmall.glproduct.controller;
 
-import com.glmall.glproduct.beans.Attribute;
 import com.glmall.glproduct.beans.AttributeGroup;
 import com.glmall.glproduct.beans.Attribute_AttributeGroup;
 import com.glmall.glproduct.beans.Product_Attribute;
 import com.glmall.glproduct.beans.vo.AttributeVO;
 import com.glmall.glproduct.beans.vo.GroupWithAttrVO;
 import com.glmall.glproduct.service.AttributeService;
+import com.glmall.utils.Page_1;
 import com.glmall.utils.R;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-import org.w3c.dom.Attr;
 
 import java.util.List;
 import java.util.Map;
@@ -22,6 +20,12 @@ import java.util.Map;
 public class AttributeController {
     @Autowired
     AttributeService attributeService;
+
+    @GetMapping("/getSkuSaleAttr")
+    public R getSkuSaleAttrsBySkuId(String id){
+      List<String> saleAttrs=  attributeService.getSkuSaleAttrsBySkuId(id);
+      return R.ok().put("data",saleAttrs);
+    }
 
     @GetMapping("/group/{cateId}")
     public R getAllAttrGroup(@RequestParam Map map, @PathVariable("cateId") String cateId) {
@@ -53,8 +57,9 @@ public class AttributeController {
 
     @GetMapping("/attribute/{categoryId}")
     public R getAllAttribute(@RequestParam Map map, @PathVariable String categoryId) {
-        Page attributePage = attributeService.getAllAttribute(map, categoryId);
-        return R.ok().put("data", attributePage);
+        Page_1 attributePage1 = attributeService.getAllAttribute(map, categoryId);
+        System.out.println(attributePage1);
+        return R.ok().put("data", attributePage1);
     }
 
     @DeleteMapping("/attribute_attributeGroup")
@@ -85,5 +90,7 @@ public class AttributeController {
        List< Product_Attribute>  product_attributeList= attributeService.saveProductBasicAttr(product_attributes,productId);
        return R.ok().put("data",product_attributeList);
     }
+
+
 
 }

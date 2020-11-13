@@ -16,7 +16,7 @@ public class ProductCombReduce {
     @GenericGenerator(name = "snowFlakeWorker", strategy = "com.glmall.utils.SnowflakeId")
 private String id;
     private String productCombId;
-    private String fullPrice;
+    private BigDecimal fullPrice;
     private BigDecimal reducePrice;
     private String priceStatus;
 

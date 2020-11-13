@@ -5,6 +5,7 @@ import com.glmall.glproduct.beans.vo.AttributeVO;
 import com.glmall.glproduct.beans.vo.GroupWithAttrVO;
 import com.glmall.glproduct.dao.*;
 import com.glmall.utils.Const;
+import com.glmall.utils.Page_1;
 import com.glmall.utils.UpdateTool;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -37,6 +38,8 @@ public class AttributeServiceImp implements AttributeService {
     EntityManager entityManager;
     @Autowired
     Product_AttributeMapper product_attributeMapper;
+    @Autowired
+    ProductComb_AttributeMapper productComb_attributeMapper;
 
     @Override
     public Page getAllAttrGroup(Map map, String cateId) {
@@ -140,9 +143,10 @@ public class AttributeServiceImp implements AttributeService {
         map.put("save", save);
         return map;
     }
-
+// the result is changing according to different id, so redis is not suitable?
+//    @Cacheable(value = "attr", key = "'attrInfoById'")
     @Override
-    public Page getAllAttribute(Map map, String categoryId) {
+    public Page_1 getAllAttribute(Map map, String categoryId) {
         String id = (String) map.get("id");
         String type = (String) map.get("type");
         String key = (String) map.get("key");
@@ -208,9 +212,8 @@ public class AttributeServiceImp implements AttributeService {
             }
             return attributeVO;
         }).collect(Collectors.toList());
-
-        return new PageImpl(resList, PageRequest.of(attributePage.getNumber(),
-                attributePage.getSize()), attributePage.getTotalElements());
+        return new Page_1(resList, attributePage.getNumber(),
+                attributePage.getSize(), attributePage.getTotalElements());
     }
 
     @Override
@@ -337,6 +340,12 @@ public class AttributeServiceImp implements AttributeService {
         }).collect(Collectors.toList());
         List<Product_Attribute> product_attributeList = product_attributeMapper.saveAll(product_attributes1);
         return product_attributeList;
+    }
+
+    @Override
+    public List<String> getSkuSaleAttrsBySkuId(String id) {
+        List<String> skuSaleAttrsBySkuId = productComb_attributeMapper.getSkuSaleAttrsBySkuId(id);
+        return skuSaleAttrsBySkuId;
     }
 
     private void getAllCategoryParentIds(List categoryList, String id) {

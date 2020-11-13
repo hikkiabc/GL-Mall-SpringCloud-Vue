@@ -11,6 +11,10 @@ spring:
       oss:
         endpoint: oss-cn-beijing.aliyuncs.com
         bucket: edu-0802
+  sms:
+    domain: "dysmsapi.aliyuncs.com"
+    sign-name: "glmall"
+    template-code: "SMS_205399328"
 
 server:
   port: 30000

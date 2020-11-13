@@ -1,0 +1,118 @@
+//GET gl_product/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "productCombTitle": "1"
+          }
+        }
+      ],
+      "filter": [
+        {
+          "term": {
+            "productId": "766782416521003008"
+          }
+        },
+        {
+          "terms": {
+            "brandId": [
+              "1",
+              "2"
+            ]
+          }
+        },
+        {
+          "range": {
+            "price": {
+              "gte": 10,
+              "lte": 20
+            }
+          }
+        },
+        {
+          "nested": {
+            "path": "attrList",
+            "query": {
+              "bool": {
+                "must": [
+                  {
+                    "term": {
+                      "attrList.id": {
+                        "value": "764686846641831936"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "sort": [
+    {
+      "price": {
+        "order": "desc"
+      }
+    }
+  ],
+  "from": 0,
+  "size": 20,
+  "highlight": {
+    "fields": {
+      "productCombTitle": {}
+    },
+    "pre_tags": [
+      "<b style='color:red'>"
+    ],
+    "post_tags": [
+      "</b>"
+    ]
+  },
+  "aggs": {
+    "brand_agg": {
+      "terms": {
+        "field": "brandId",
+        "size": 10
+      },
+      "aggs": {
+        "brand_name_agg": {
+          "terms": {
+            "field": "brandName",
+            "size": 10
+          }
+        }
+      }
+    },
+    "attr_agg": {
+      "nested": {
+        "path": "attrList"
+      },
+      "aggs": {
+        "attr_id_agg": {
+          "terms": {
+            "field": "attrList.id",
+            "size": 10
+          },
+          "aggs": {
+            "attr_name_agg": {
+              "terms": {
+                "field": "attrList.name",
+                "size": 10
+              }
+            },
+            "attr_value_agg": {
+              "terms": {
+                "field": "attrList.value",
+                "size": 10
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}}

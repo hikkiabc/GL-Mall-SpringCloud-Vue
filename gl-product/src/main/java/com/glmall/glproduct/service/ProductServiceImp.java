@@ -127,6 +127,7 @@ public class ProductServiceImp implements ProductService {
             savedProductCombItem.put("productComb_attributeList", productComb_attributeList);
             ProductDiscountTO productDiscountTO = new ProductDiscountTO();
             BeanUtils.copyProperties(e, productDiscountTO);
+            System.out.println(e);
             productDiscountTO.setProductCombId(savedProductComb.getId());
             R saveProduct_discount = couponFeign.saveProduct_discount(productDiscountTO);
             savedProductCombItem.put("saveProduct_discount", saveProduct_discount);
@@ -177,12 +178,13 @@ public class ProductServiceImp implements ProductService {
         List<String> idList = product_attributes.stream().map(Product_Attribute::getId).collect(Collectors.toList());
         List<String> searchIdList = attributeMapper.findSearchTypeByIds(idList);
         Set<String> idSet = new HashSet<>(searchIdList);
-        List<EsProductComb.Attr> attrListEs = product_attributes.stream().filter(e -> idSet.contains(e.getId())).map(e1 -> {
-            EsProductComb.Attr attr = new EsProductComb.Attr();
+        List<EsProductComb.Attr> attrListEs = product_attributes.stream().filter
+                (e -> idSet.contains(e.getId())).map(e1 -> {EsProductComb.Attr attr = new EsProductComb.Attr();
             BeanUtils.copyProperties(e1, attr);
             return attr;
         }).collect(Collectors.toList());
-        List<ProductCombination> productCombinationByProductId = productCombinationMapper.getProductCombinationByProductId(id);
+        List<ProductCombination> productCombinationByProductId =
+                productCombinationMapper.getProductCombinationByProductId(id);
         List<String> productCombIdList = productCombinationByProductId.stream()
                 .map(ProductCombination::getId).collect(Collectors.toList());
         Map<String, Boolean> hasStockMap = null;
@@ -208,6 +210,7 @@ public class ProductServiceImp implements ProductService {
             esProductComb.setCategoryName(productCategory.getName());
             ProductBrand productBrand = productBrandMapper.findById(e.getBrandId()).get();
             esProductComb.setBrandName(productBrand.getName());
+            esProductComb.setBrandImg(productBrand.getLogo());
             if (finalHasStockMap == null) {
                 esProductComb.setHasStock(true);
             } else {

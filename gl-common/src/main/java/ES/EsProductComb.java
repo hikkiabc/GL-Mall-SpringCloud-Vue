@@ -18,6 +18,7 @@ public class EsProductComb {
     private String categoryName;
     private String brandId;
     private String brandName;
+    private String brandImg;
     private Integer saleCount;
     private Long hotScore=0L;
     private List<Attr> attrList;

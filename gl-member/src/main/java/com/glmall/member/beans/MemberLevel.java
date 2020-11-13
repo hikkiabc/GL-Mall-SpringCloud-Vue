@@ -17,4 +17,5 @@ public class MemberLevel {
     private String name;
     private String note;
     private String privilegeMemberPrice;
+    private String defaultLevel;
 }

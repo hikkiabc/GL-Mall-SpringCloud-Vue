@@ -8,7 +8,7 @@ import java.util.List;
 @Data
 public class ProductDiscountTO {
     private String productCombId;
-    private Integer fullCount;
+    private String fullCount;
     private BigDecimal discount;
     private String countStatus;
     private String priceStatus;

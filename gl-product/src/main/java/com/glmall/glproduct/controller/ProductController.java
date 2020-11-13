@@ -70,8 +70,12 @@ public class ProductController {
             Page<ProductBrand> productBrandList= productBrandService.findAllBrand(map);
             return R.ok().put("data",productBrandList);
         }
+    }
 
-
+    @GetMapping("/brand-by-brandIds")
+    public R findBrandByBrandIdList(@RequestParam("brandIds") List<String> brandIds){
+      List<ProductBrand> productBrandList=  productBrandService.findBrandByBrandIdList(brandIds);
+      return R.ok().put("data",productBrandList);
     }
     @PostMapping("/brand")
     public R addOrUpdateBrand(@Validated({AddValidate.class, UpdateValidate.class}) @RequestBody ProductBrand productBrand/*, BindingResult result*/){

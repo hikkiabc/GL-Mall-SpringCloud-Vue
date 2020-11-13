@@ -45,6 +45,20 @@ spring:
        - id: glmall_host
          uri: lb://guli-product
          predicates:
-           - Host=**.192.168.0.15
-
-
+           - Host=glmall.com, item.glmall.com
+       - id: glmall_es
+         uri: lb://gl-elastic-search
+         predicates:
+           - Host=search.glmall.com
+       - id: glmall-auth
+         uri: lb://glmall-auth
+         predicates:
+           - Host= auth.glmall.com
+       - id: glmall-cart
+         uri: lb://glmall-cart
+         predicates:
+           - Host= cart.glmall.com
+       - id : glmall-order
+         uri: lb://glmall-order
+         predicates:
+           - Host= order.glmall.com

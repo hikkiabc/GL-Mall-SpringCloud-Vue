@@ -1,5 +1,6 @@
 package com.glmall.glproduct.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.glmall.glproduct.beans.ProductCategory;
 
 import java.util.List;
@@ -18,5 +19,5 @@ public interface CategoryService {
 
     List<ProductCategory> findLvl1Category();
 
-    Map<String, Object> getCategoryMap();
+    Map<String, Object> getCategoryMap() throws JsonProcessingException, InterruptedException;
 }

@@ -43,7 +43,13 @@ public class R extends HashMap<String, Object> {
 		T readValue = objectMapper.readValue(valueAsString, tTypeReference);
 		return readValue;
 	}
-
+	public<T> T getData(TypeReference<T> tTypeReference,Boolean isPage) throws IOException {
+		ObjectMapper objectMapper = new ObjectMapper();
+		Map data = (Map) get("data");
+		String valueAsString = objectMapper.writeValueAsString(data.get("content"));
+		T readValue = objectMapper.readValue(valueAsString, tTypeReference);
+		return readValue;
+	}
 	public static R error() {
 		return error(HttpStatus.SC_INTERNAL_SERVER_ERROR, "未知异常，请联系管理员");
 	}

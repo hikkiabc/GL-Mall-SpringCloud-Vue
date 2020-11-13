@@ -91,8 +91,8 @@
             </b>
             <ul>
                 <li th:if="${session.loginUser} !=null">
-                    <a>欢迎，[[${session.loginUser.username}]]</a>
-                    <!--              <a th:href="'http://member.glmall.com/user/' + ${session.loginUser.id}+ '.html'">你好，[[${session.loginUser.username}]]</a>-->
+                    <a>欢迎，[[${session.loginUser.name}]]</a>
+                    <!--              <a th:href="'http://member.glmall.com/user/' + ${session.loginUser.id}+ '.html'">你好，[[${session.loginUser.name}]]</a>-->
                 </li>
                 <li th:if="${session.loginUser} !=null">
                     <a href="http://auth.glmall.com/oauth2.0/logout">退出登录</a>

@@ -15,7 +15,7 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        generate_statistics: true
+#        generate_statistics: true
         format_sql: true
         jdbc:
           batch_size: 500
@@ -35,8 +35,15 @@ spring:
     date-format: MM-dd-yyyy HH:mm:ss
   thymeleaf:
     cache: false
+  redis:
+    host: 192.168.0.15
 server:
   port: 9000
 #logging:
 #  level:
+glmall:
+  thread:
+    core-size: 20
+    keep-alive-time: 10
+    max-size: 50
 #    com.glmall: error

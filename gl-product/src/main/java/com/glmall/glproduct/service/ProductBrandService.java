@@ -19,4 +19,6 @@ public interface ProductBrandService {
     void deleteBrandCategory(BrandCategory brandCategory);
 
     ProductBrand findById(String id);
+
+    List<ProductBrand> findBrandByBrandIdList(List<String> brandIds);
 }

@@ -1,15 +1,15 @@
 package com.glmall.ware.service;
 
 import TO.ProductCombStockTO;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.glmall.utils.R;
 import com.glmall.utils.UpdateTool;
-import com.glmall.ware.beans.PurchaseDetail;
-import com.glmall.ware.beans.WareInfo;
+import com.glmall.ware.beans.*;
+import com.glmall.ware.feign.MemberFeign;
 import com.glmall.ware.feign.WareProductCombFeign;
 import com.glmall.ware.mapper.PurchaseDetailMapper;
 import com.glmall.ware.mapper.WareInfoMapper;
 import com.glmall.ware.mapper.WareProductCombMapper;
-import com.glmall.ware.beans.ProductCombWare;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -23,6 +23,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -35,8 +37,11 @@ public class WareProductCombServiceImp implements WareProductCombService {
     WareInfoMapper wareInfoMapper;
     @Autowired
     PurchaseDetailMapper purchaseDetailMapper;
-@Autowired
+    @Autowired
     WareProductCombFeign wareProductCombFeign;
+    @Autowired
+    MemberFeign memberFeign;
+
     @Override
     public Page<ProductCombWare> getWareProductComb(Map map) {
         Specification<ProductCombWare> specification = new Specification<>() {
@@ -135,32 +140,32 @@ public class WareProductCombServiceImp implements WareProductCombService {
 
     @Override
     public PurchaseDetail savePurchaseDetail(PurchaseDetail purchaseDetail) {
-        if (!StringUtils.isBlank(purchaseDetail.getId())&&!purchaseDetail.getId().equals("0")){
+        if (!StringUtils.isBlank(purchaseDetail.getId()) && !purchaseDetail.getId().equals("0")) {
             PurchaseDetail purchaseDetail1 = purchaseDetailMapper.findById(purchaseDetail.getId()).get();
-            UpdateTool.copyNullProperties(purchaseDetail1,purchaseDetail);
+            UpdateTool.copyNullProperties(purchaseDetail1, purchaseDetail);
         }
         return purchaseDetailMapper.save(purchaseDetail);
     }
 
     @Override
     public ProductCombWare saveWareProductComb(ProductCombWare productCombWare) {
-        String id= productCombWare.getId();
-        if (!StringUtils.isBlank(id)&&!id.equals("0")){
+        String id = productCombWare.getId();
+        if (!StringUtils.isBlank(id) && !id.equals("0")) {
             Optional<ProductCombWare> byId = wareProductCombMapper.findById(id);
             UpdateTool.copyNullProperties(byId, productCombWare);
         }
         String productCombId = productCombWare.getProductCombId();
 
         try {
-            Map<String,Object> map=new HashMap<>();
-            map.put("key",productCombId);
-            map.put("pageSize",1);
-            map.put("pageNum",1);
+            Map<String, Object> map = new HashMap<>();
+            map.put("key", productCombId);
+            map.put("pageSize", 1);
+            map.put("pageNum", 1);
             R combination = wareProductCombFeign.getAllCombination(map);
-            Map<String,Object> data = (Map<String, Object>) combination.get("data");
-            List data1= (List) data.get("content");
-            Map<String,Object> map1= (Map<String, Object>) data1.get(0);
-            String name= (String) map1.get("name");
+            Map<String, Object> data = (Map<String, Object>) combination.get("data");
+            List data1 = (List) data.get("content");
+            Map<String, Object> map1 = (Map<String, Object>) data1.get(0);
+            String name = (String) map1.get("name");
             productCombWare.setProductCombName(name);
         } catch (Exception e) {
             e.printStackTrace();
@@ -174,10 +179,24 @@ public class WareProductCombServiceImp implements WareProductCombService {
         List<ProductCombStockTO> productCombStockTOList = idList.stream().map(e -> {
             Long stockByProductCombId = wareProductCombMapper.getProductCombHasStockByProductCombId(e);
             ProductCombStockTO productCombStockTO = new ProductCombStockTO();
-            productCombStockTO.setHasStock(stockByProductCombId==null?false:stockByProductCombId > 0);
+            productCombStockTO.setHasStock(stockByProductCombId == null ? false : stockByProductCombId > 0);
             productCombStockTO.setProductCombId(e);
             return productCombStockTO;
         }).collect(Collectors.toList());
         return productCombStockTOList;
+    }
+
+    @Override
+    public FareVo getDeliveryFareByAddressId(String id) throws IOException {
+        FareVo fareVo = new FareVo();
+        R memberAddressById = memberFeign.getMemberAddressById(id);
+        MemberAddressVo memberAddressVo= memberAddressById.getData(new TypeReference<MemberAddressVo>() {
+        });
+        String phone = memberAddressVo.getPhone();
+        String substring = phone.substring(phone.length() - 1);
+        BigDecimal bigDecimal = new BigDecimal(substring);
+        fareVo.setFare(bigDecimal);
+        fareVo.setMemberAddressVo(memberAddressVo);
+        return fareVo;
     }
 }

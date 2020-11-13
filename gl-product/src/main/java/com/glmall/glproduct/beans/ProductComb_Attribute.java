@@ -14,7 +14,7 @@ public class ProductComb_Attribute {
     @Id
     @GeneratedValue(generator = "snowFlakeWorker")
     @GenericGenerator(name = "snowFlakeWorker", strategy = "com.glmall.utils.SnowflakeId")
-private String tableId;
+    private String tableId;
     private String productCombId;
     private String id;
     private String value;

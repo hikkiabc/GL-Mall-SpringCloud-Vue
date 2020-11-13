@@ -22,7 +22,7 @@ public class ProductCombVO {
     private String title;
     private String subTitle;
     private Integer saleCount;
-    private Integer fullCount;
+    private String fullCount;
     private BigDecimal discount;
     private String countStatus;
     private String priceStatus;

@@ -113,4 +113,18 @@ public class ProductBrandServiceImp implements ProductBrandService {
         ProductBrand productBrand = productBrandMapper.findById(id).get();
         return productBrand;
     }
+
+    @Override
+    public List<ProductBrand> findBrandByBrandIdList(List<String> brandIds) {
+        Specification<ProductBrand> specification = new Specification<>() {
+            @Override
+            public Predicate toPredicate(Root<ProductBrand> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                CriteriaBuilder.In<Object> id = criteriaBuilder.in(root.get("id")).value(brandIds);
+                return id;
+            }
+        };
+        List<ProductBrand> productBrandList = productBrandMapper.findAll(specification);
+        System.out.println(productBrandList);
+        return productBrandList;
+    }
 }

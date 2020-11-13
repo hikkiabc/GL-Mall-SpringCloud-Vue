@@ -34,15 +34,17 @@ public class ProductDiscountServiceImp implements ProductDiscountService {
     @Override
     public Map<String, Object> saveProduct_discount(ProductDiscountTO productDiscountTO) {
         Map<String,Object> map=new HashMap<>();
+
         ProductCombDiscount productCombDiscount = new ProductCombDiscount();
         BeanUtils.copyProperties(productDiscountTO,productCombDiscount);
+        System.out.println(productDiscountTO);
         if (Double.valueOf(productCombDiscount.getFullCount()) >0){
             ProductCombDiscount productCombDiscount1 = productCombDiscountMapper.save(productCombDiscount);
             map.put("productCombDiscount1",productCombDiscount1);
         }
         ProductCombReduce productCombReduce = new ProductCombReduce();
         BeanUtils.copyProperties(productDiscountTO,productCombReduce);
-        if(Double.valueOf(productCombReduce.getFullPrice()) >0){
+        if((productCombReduce.getFullPrice().compareTo(new BigDecimal("0")))>0){
             ProductCombReduce productCombReduce1 = productCombReduceMapper.save(productCombReduce);
             map.put("productCombReduce1",productCombReduce1);
         }
