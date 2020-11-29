@@ -37,6 +37,15 @@ spring:
     cache: false
   redis:
     host: 192.168.0.15
+  zipkin:
+    base-url: http://192.168.0.15:9411
+    discovery-client-enabled: false
+    sender:
+      type: web
+  sleuth:
+    sampler:
+      probability: 1
+#      probability: 0.1 
 server:
   port: 9000
 #logging:

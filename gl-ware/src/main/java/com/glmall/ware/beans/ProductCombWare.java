@@ -18,6 +18,6 @@ public class ProductCombWare {
     private String wareId;
     private String stock;
     private String productCombName;
-    private String stockLock;
+    private String stockLock="0";
 
 }

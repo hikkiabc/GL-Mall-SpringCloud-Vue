@@ -17,5 +17,6 @@ public class SkuItemInfoVo {
     private ProductDescImg desc;
     private List<SkuItemSaleAttrVo> saleAttrs=new ArrayList<>();
     private List<SpuGroupAndAttrVo> groupAttrs=new ArrayList<>();
+    private SecKillSkuRelationVo seckillInfo;
 
 }

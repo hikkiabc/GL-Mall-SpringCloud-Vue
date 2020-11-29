@@ -15,4 +15,6 @@ public interface ProductService {
     Integer updateProductById(String id);
 
     Page<ProductCombination> getAllCombination(Map map);
+
+    ProductEntity getProductBySkuId(String id);
 }

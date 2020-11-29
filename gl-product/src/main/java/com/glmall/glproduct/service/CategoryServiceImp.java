@@ -106,7 +106,7 @@ public class CategoryServiceImp implements CategoryService {
         return byPid;
     }
 
-                                                            //add lock --sync
+   //add lock --sync,(local lock, not a distributed lock, it's only a read lock)
     @Cacheable(value = {"category"}, key = "#root.methodName",sync = true)
     @Override
     public Map<String, Object> getCategoryMap() {

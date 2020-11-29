@@ -36,6 +36,12 @@ spring:
            - Path=/api/ware/**
          filters:
            - RewritePath=/api/(?<segment>.*),/$\{segment}
+       - id: coupn
+         uri: lb://glmall-coupon
+         predicates:
+           - Path=/api/coupon/**
+         filters:
+           - RewritePath=/api/(?<segment>.*),/$\{segment}
        - id: admin
          uri: lb://renren-admin
          predicates:
@@ -45,11 +51,11 @@ spring:
        - id: glmall_host
          uri: lb://guli-product
          predicates:
-           - Host=glmall.com, item.glmall.com
+           - Host= glmall.com, item.glmall.com
        - id: glmall_es
          uri: lb://gl-elastic-search
          predicates:
-           - Host=search.glmall.com
+           - Host= search.glmall.com
        - id: glmall-auth
          uri: lb://glmall-auth
          predicates:
@@ -62,3 +68,13 @@ spring:
          uri: lb://glmall-order
          predicates:
            - Host= order.glmall.com
+
+       - id: glmall-member
+         uri: lb://glmall-member
+         predicates:
+           - Host= member.glmall.com
+
+       - id: glmall-seckill
+         uri: lb://gl-seckill
+         predicates:
+           - Host= seckill.glmall.com

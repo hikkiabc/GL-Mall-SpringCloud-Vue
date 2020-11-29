@@ -16,7 +16,8 @@ public class CartFeignConfig {
         return   new RequestInterceptor() {
             @Override
             public void apply(RequestTemplate requestTemplate) {
-                ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+                ServletRequestAttributes requestAttributes =
+                        (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
                 HttpServletRequest request = requestAttributes.getRequest();
                 if (request!=null){
                     requestTemplate.header("Cookie", request.getHeader("Cookie"));

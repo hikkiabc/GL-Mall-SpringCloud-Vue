@@ -12,4 +12,10 @@ public interface ProductEntityMapper extends JpaRepository<ProductEntity,String>
     @Modifying
     @Query(value="update product_entity set publish_status=1, update_time=?2 where id=?1",nativeQuery=true)
     Integer save1(String id, Date date);
+
+    @Query(value="select product_entity.*, product_brand.name brand_name from" +
+            " product_combination RIGHT JOIN product_entity on" +
+            " product_combination.product_id=product_entity.id LEFT JOIN product_brand" +
+            " on product_brand.id=product_entity.brand_id where product_combination.id=?1",nativeQuery=true)
+    ProductEntity getProductEntityBySkuId(String id);
 }

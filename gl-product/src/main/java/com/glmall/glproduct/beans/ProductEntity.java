@@ -28,7 +28,8 @@ public class ProductEntity {
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "MM-dd-yyyy HH:mm:ss"/*, timezone = "GMT+8"*/)
     private Date updateTime=new Date();
-
+    @Transient
+    private String brandName;
 //    @OneToMany(targetEntity = DescImg.class,mappedBy = "productProduct",cascade = CascadeType.ALL)
 //    private List<DescImg> descImg;
 //     @OneToMany(targetEntity = ProductImg.class,mappedBy = "productProduct",cascade = CascadeType.ALL)

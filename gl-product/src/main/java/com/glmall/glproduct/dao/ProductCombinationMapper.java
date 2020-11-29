@@ -17,7 +17,7 @@ public interface ProductCombinationMapper extends JpaRepository<ProductCombinati
             " product_comb_attribute.`name` attrName, product_comb_attribute.`value` attrValue FROM" +
             " `product_combination` LEFT JOIN product_comb_attribute on" +
             " product_comb_attribute.product_comb_id=product_combination.id" +
-            "  where product_combination.product_id=766782416521003008 GROUP BY" +
+            "  where product_combination.product_id=?1 GROUP BY" +
             " product_comb_attribute.id, product_comb_attribute.`name`,product_comb_attribute.`value` ",
             nativeQuery=true)
     List<Map<String,Object>> findProductCombSaleAttrByProductId(String productId);

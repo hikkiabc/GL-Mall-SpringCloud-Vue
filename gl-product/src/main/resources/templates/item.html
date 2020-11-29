@@ -12,6 +12,10 @@
         html{
             width: 100%;
         }
+        .box-footer dl{
+        height: 15px;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -521,10 +525,10 @@
                             <span>￥</span>
                             <span th:text="${#numbers.formatDecimal(item.info.price,3,2)}">4499.00</span>
                         </li>
-<!--                        <li style="color: red" th:if="${item.seckillInfoVo!=null}">-->
-<!--                            <span th:if="${#dates.createNow().getTime() < item.seckillInfoVo.startTime}">商品将会在 [[${#dates.format(new java.util.Date(item.seckillInfoVo.startTime),"yyyy-MM-dd HH:mm:ss")}]] 进行秒杀</span>-->
-<!--                            <span th:if="${#dates.createNow().getTime() >= item.seckillInfoVo.startTime && #dates.createNow().getTime() <= item.seckillInfoVo.endTime}">秒杀价： [[${#numbers.formatDecimal(item.seckillInfoVo.seckillPrice,1,2)}]]</span>-->
-<!--                        </li>-->
+                        <li style="color: red" th:if="${item.seckillInfo!=null}">
+                            <span th:if="${#dates.createNow().getTime() < item.seckillInfo.startTime}">商品将会在 [[${#dates.format(new java.util.Date(item.seckillInfo.startTime),"yyyy-MM-dd HH:mm:ss")}]] 进行秒杀</span>
+                            <span th:if="${#dates.createNow().getTime() >= item.seckillInfo.startTime && #dates.createNow().getTime() <= item.seckillInfo.endTime}">秒杀价： [[${#numbers.formatDecimal(item.seckillInfo.secKillPrice,1,2)}]]</span>
+                        </li>
                         <li>
                             <a href="/static/item/">
                                 预约说明
@@ -624,33 +628,33 @@
                 </div>
 
                 <div class="box-btns clear">
-<!--                    <div class="box-btns-one">-->
-<!--                        <input type="text" name="" id="numInput" value="1" />-->
-<!--                        <div class="box-btns-one1">-->
+                    <div class="box-btns-one">
+                        <input type="text" name="" id="numInput" value="1" />
+                        <div class="box-btns-one1">
 
-<!--                            <div>-->
-<!--                                <button id="jia">-->
-<!--                                    +-->
-<!--                                </button>-->
-<!--                            </div>-->
-<!--                            <div>-->
-<!--                                <button id="jian">-->
-<!--                                    - -->
-<!--                                </button>-->
-<!--                            </div>-->
+                            <div>
+                                <button id="jia">
+                                    +
+                                </button>
+                            </div>
+                            <div>
+                                <button id="jian">
+                                    -
+                                </button>
+                            </div>
 
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="box-btns-two" th:if="${item.seckillInfoVo != null && (#dates.createNow().getTime() >= item.seckillInfoVo.startTime && #dates.createNow().getTime() <= item.seckillInfoVo.endTime)}">-->
-<!--                        <a id="secKillA" th:attr="skuId=${item.info.id},sessionId=${item.seckillInfoVo.promotionSessionId},code=${item.seckillInfoVo.randomCode}">-->
-<!--                            立即抢购-->
-<!--                        </a>-->
-<!--                    </div>-->
-<!--                    <div class="box-btns-two" th:if="${item.seckillInfoVo == null || (#dates.createNow().getTime() < item.seckillInfoVo.startTime || #dates.createNow().getTime() > item.seckillInfoVo.endTime)}">-->
-<!--                        <a id="addToCartA" th:attr="skuId=${item.info.id}">-->
-<!--                            加入购物车-->
-<!--                        </a>-->
-<!--                    </div>-->
+                        </div>
+                    </div>
+                    <div class="box-btns-two" th:if="${item.seckillInfo != null && (#dates.createNow().getTime() >= item.seckillInfo.startTime && #dates.createNow().getTime() <= item.seckillInfo.endTime)}">
+                        <a id="secKillA" th:attr="skuId=${item.info.id},sessionId=${item.seckillInfo.promotionSessionId},code=${item.seckillInfo.token}">
+                            立即抢购
+                        </a>
+                    </div>
+                    <div class="box-btns-two" th:if="${item.seckillInfo == null || (#dates.createNow().getTime() < item.seckillInfo.startTime || #dates.createNow().getTime() > item.seckillInfo.endTime)}">
+                        <a id="addToCartA" th:attr="skuId=${item.info.id}">
+                            加入购物车
+                        </a>
+                    </div>
                     <div class="box-btns-three">
                         <img src="/static/item/img/e4ed3606843f664591ff1f68f7fda12d.png" alt="" /> 分享
                     </div>
@@ -1516,7 +1520,7 @@
     $("#secKillA").click(function () {
         var isLogin = [[${session.loginUser != null}]]
         if(isLogin){
-            var killId = $(this).attr("sessionid") + "-" + $(this).attr("skuid");
+            var killId = $(this).attr("sessionid") + "_" + $(this).attr("skuid");
             var num = $("#numInput").val();
             location.href = "http://seckill.glmall.com/kill?killId=" + killId + "&key=" + $(this).attr("code") + "&num=" + num;
         }else{

@@ -266,4 +266,10 @@ public class ProductServiceImp implements ProductService {
                 Integer.valueOf((String) map.get("pageSize"))));
         return productCombinationPage;
     }
+
+    @Override
+    public ProductEntity getProductBySkuId(String id) {
+        ProductEntity productEntityBySkuId = productEntityMapper.getProductEntityBySkuId(id);
+        return productEntityBySkuId;
+    }
 }

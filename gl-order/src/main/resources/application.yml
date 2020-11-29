@@ -9,9 +9,25 @@ spring:
     cache: false
   redis:
     host: 192.168.0.15
+  datasource:
+    url: jdbc:mysql://192.168.0.15:3306/gulimall_order?rewriteBatchedStatements=true
+    password: 123456
+    username: root
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        #        generate_statistics: true
+        format_sql: true
+        jdbc:
+          batch_size: 500
+          batch_versioned_data: true
+        order_inserts: true
+        order_updates: true
 server:
   port: 9500
-
 glmall:
   thread:
     core-size: 20

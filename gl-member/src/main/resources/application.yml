@@ -24,4 +24,15 @@ spring:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
-
+  redis:
+    host: 192.168.0.15
+  zipkin:
+    base-url: http://192.168.0.15:9411
+    discovery-client-enabled: false
+    sender:
+      type: web
+  sleuth:
+    sampler:
+      probability: 1
+  thymeleaf:
+    cache: false

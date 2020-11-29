@@ -10,6 +10,14 @@ spring:
   redis:
     host: 192.168.0.15
     port: 6379
+  zipkin:
+    base-url: http://192.168.0.15:9411
+    discovery-client-enabled: false
+    sender:
+      type: web
+  sleuth:
+    sampler:
+      probability: 1
   session:
     store-type: redis
     timeout: 30m

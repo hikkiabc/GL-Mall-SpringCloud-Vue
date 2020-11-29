@@ -588,11 +588,11 @@
     $.get("http://seckill.glmall.com/currentSeckillSkus",function (resp) {
         if(resp.data.length > 0){
             resp.data.forEach(function (item) {
-                $("<li onclick='to_href(" + item.skuId + ")'></li>")
-                    .append($("<img style='width: 130px; height: 130px;' src='" + item.skuInfoVo.skuDefaultImg + "'/>"))
-                    .append($("<p>" + item.skuInfoVo.skuTitle + "</p>"))
-                    .append($("<span>￥" + item.seckillPrice + "</span>"))
-                    .append($("<s>￥" + item.skuInfoVo.price + "</s>"))
+                $("<li onclick='to_href(" + JSON.stringify(item.skuId) + ")'></li>")
+                    .append($("<img style='width: 130px; height: 130px;' src='" + item.productCombVo.defaultImg + "'/>"))
+                    .append($("<p>" + item.productCombVo.title + "</p>"))
+                    .append($("<span>￥" + item.secKillPrice + "</span>"))
+                    .append($("<s>￥" + item.productCombVo.price + "</s>"))
                     .appendTo("#seckillSkuContent");
             })
         }

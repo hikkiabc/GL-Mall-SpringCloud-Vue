@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -44,8 +45,9 @@ public class IndexController {
     }
 
     @GetMapping("/{productCombId}.html")
-    public String toItem(@PathVariable String productCombId,Model model) throws ExecutionException, InterruptedException {
+    public String toItem(@PathVariable String productCombId,Model model) throws ExecutionException, InterruptedException, IOException {
        SkuItemInfoVo skuItemInfo= skuService.findSkuItemInfo(productCombId);
+        System.out.println(skuItemInfo);
        model.addAttribute("item",skuItemInfo);
         return "item";
     }

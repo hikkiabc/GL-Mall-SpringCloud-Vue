@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class CartInterceptor implements HandlerInterceptor {
-    public static ThreadLocal<UserOrTempUserTo> threadLocal=new ThreadLocal<>();
+    public static ThreadLocal<UserOrTempUserTo> threadLocal = new ThreadLocal<>();
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

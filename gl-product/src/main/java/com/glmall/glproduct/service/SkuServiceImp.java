@@ -1,22 +1,23 @@
 package com.glmall.glproduct.service;
 
 import TO.ProductCombTo;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.glmall.glproduct.beans.Attribute;
 import com.glmall.glproduct.beans.ProductCombImg;
 import com.glmall.glproduct.beans.ProductCombination;
 import com.glmall.glproduct.beans.ProductDescImg;
-import com.glmall.glproduct.beans.vo.SaleAttrValueAndSkuIds;
-import com.glmall.glproduct.beans.vo.SkuItemInfoVo;
-import com.glmall.glproduct.beans.vo.SkuItemSaleAttrVo;
-import com.glmall.glproduct.beans.vo.SpuGroupAndAttrVo;
+import com.glmall.glproduct.beans.vo.*;
 import com.glmall.glproduct.config.ThreadPoolConfig;
 import com.glmall.glproduct.dao.*;
+import com.glmall.glproduct.feign.SecKillFeign;
 import com.glmall.utils.BeanUtil;
+import com.glmall.utils.R;
 import org.apache.catalina.valves.rewrite.InternalRewriteMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -36,11 +37,13 @@ public class SkuServiceImp implements SkuService {
     AttributeGroupMapper attributeGroupMapper;
     @Autowired
     ThreadPoolExecutor threadPoolExecutor;
+    @Autowired
+    SecKillFeign secKillFeign;
 
     @Override
-    public SkuItemInfoVo findSkuItemInfo(String productCombId) throws ExecutionException, InterruptedException {
+    public SkuItemInfoVo findSkuItemInfo(String productCombId) throws ExecutionException, InterruptedException, IOException {
         SkuItemInfoVo skuItemInfoVo = new SkuItemInfoVo();
-
+        System.out.println(productCombId);
         CompletableFuture<ProductCombination> productCombinationFuture = CompletableFuture.supplyAsync(() -> {
             ProductCombination productCombination = productCombinationMapper.findById(productCombId).get();
             skuItemInfoVo.setInfo(productCombination);
@@ -82,15 +85,15 @@ public class SkuServiceImp implements SkuService {
         }, threadPoolExecutor);
 
         CompletableFuture<Void> saleAttrFuture = productCombinationFuture.thenAcceptAsync(res -> {
-            List<Map<String, Object>> skuItemSaleAttrVoList = productCombinationMapper.findProductCombSaleAttrByProductId
+            List<Map<String, Object>> skuItemSaleAttrVoList =
+                    productCombinationMapper.findProductCombSaleAttrByProductId
                     (res.getProductId());
             Set<String> attrIdSet = new HashSet<>();
-
             skuItemSaleAttrVoList.stream().map(e -> {
-                if (attrIdSet.contains( e.get("attrId").toString())) {
+                if (attrIdSet.contains(e.get("attrId").toString())) {
                     SaleAttrValueAndSkuIds saleAttrValueAndSkuIds = new SaleAttrValueAndSkuIds();
                     saleAttrValueAndSkuIds.setAttrValue((String) e.get("attrValue"));
-                    saleAttrValueAndSkuIds.setSkuIds(Arrays.asList(e.get("skuIds").toString().split(",")));
+                    saleAttrValueAndSkuIds.setSkuIds(e.get("skuIds").toString());
                     skuItemInfoVo.getSaleAttrs().stream().filter(e1 -> e1.getAttrId().equals(e.get("attrId")))
                             .collect(Collectors.toList()).get(0).getAttrValues().add(saleAttrValueAndSkuIds);
                 } else {
@@ -99,7 +102,7 @@ public class SkuServiceImp implements SkuService {
                     skuItemSaleAttrVo.setAttrName((String) e.get("attrName"));
                     SaleAttrValueAndSkuIds saleAttrValueAndSkuIds = new SaleAttrValueAndSkuIds();
                     saleAttrValueAndSkuIds.setAttrValue((String) e.get("attrValue"));
-                    saleAttrValueAndSkuIds.setSkuIds(Arrays.asList(e.get("skuIds").toString().split(",")));
+                    saleAttrValueAndSkuIds.setSkuIds(e.get("skuIds").toString());
                     skuItemSaleAttrVo.getAttrValues().add(saleAttrValueAndSkuIds);
                     skuItemInfoVo.getSaleAttrs().add(skuItemSaleAttrVo);
                     attrIdSet.add((String) e.get("attrId"));
@@ -108,8 +111,19 @@ public class SkuServiceImp implements SkuService {
             }).collect(Collectors.toList());
         }, threadPoolExecutor);
 
-        CompletableFuture.allOf(saleAttrFuture,baseAttrFuture,productDesImgFuture,productCombImgFuture).get();
+        CompletableFuture<Void> secKillFuture = CompletableFuture.runAsync(() -> {
+            R skuSecKillInfo = secKillFeign.getSkuSecKillInfo(productCombId);
+            SecKillSkuRelationVo secKillSkuRelationVo = null;
+            try {
+                secKillSkuRelationVo = skuSecKillInfo.getData(new TypeReference<>() {
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            skuItemInfoVo.setSeckillInfo(secKillSkuRelationVo);
+        },threadPoolExecutor);
 
+        CompletableFuture.allOf(saleAttrFuture, baseAttrFuture, productDesImgFuture, productCombImgFuture,secKillFuture).get();
         return skuItemInfoVo;
     }
 

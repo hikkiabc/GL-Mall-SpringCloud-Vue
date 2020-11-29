@@ -21,6 +21,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zipkin</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.glmall</groupId>
             <artifactId>gl-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
