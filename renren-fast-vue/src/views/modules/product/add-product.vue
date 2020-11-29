@@ -490,7 +490,7 @@ export default {
             }
           }
         }
-        console.log(memberPrices);
+        // console.log(memberPrices);
         //;descaridx，判断如果之前有就用之前的值;
         let res = this.hasAndReturnSku(this.spu.skus, descar);
         if (res === null) {
